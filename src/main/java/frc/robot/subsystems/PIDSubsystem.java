@@ -20,8 +20,8 @@ import frc.robot.Constants.MotorConstants;
 
 public class PIDSubsystem extends SubsystemBase {
   /** Creates a new PIDSubsystem. */
-  private final TalonFX elevatorMotor1 = new TalonFX(MotorConstants.kElevatorPort1, MotorConstants.CANbus);
-  private final TalonFX elevatorMotor2 = new TalonFX(MotorConstants.kElevatorPort2, MotorConstants.CANbus);
+  private final TalonFX elevatorMotor1 = new TalonFX(MotorConstants.kElevatorPort1);
+  private final TalonFX elevatorMotor2 = new TalonFX(MotorConstants.kElevatorPort2);
 
   private final PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 

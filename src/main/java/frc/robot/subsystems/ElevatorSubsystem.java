@@ -21,14 +21,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.MotorConstants;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+
 
 public class ElevatorSubsystem extends SubsystemBase {
   /** Creates a new ElevatorSubsystem. */
 
-  private final TalonFX talon = new TalonFX(MotorConstants.kElevatorPort1, MotorConstants.CANbus);
-  private final TalonFX follower = new TalonFX(MotorConstants.kElevatorPort2, MotorConstants.CANbus);
+  private final TalonFX talon = new TalonFX(MotorConstants.kElevatorPort1);
+  private final TalonFX follower = new TalonFX(MotorConstants.kElevatorPort2);
 
   private final DutyCycleOut talonOut = new DutyCycleOut(0);
 
@@ -79,7 +78,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       System.out.println("Could not apply configs, error code: " + status.toString());
     }
 
-    follower.setControl(new Follower(talon.getDeviceID(),true));
+    follower.setControl(new Follower(talon.getDeviceID(),false));
 
     talon.setPosition(0);
   }

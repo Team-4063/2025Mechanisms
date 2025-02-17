@@ -9,10 +9,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem; //FIXME
 import frc.robot.subsystems.ExampleSubsystem;
-//import frc.robot.subsystems.PIDSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
+//import frc.robot.subsystems.PIDSubsystem; //FIXME
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,12 +30,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
-  //private final PIDSubsystem m_PidSubsystem = new PIDSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+   //FIXME
+  private final CoralSubsystem coralSubsystem = new CoralSubsystem();
+  //private final PIDSubsystem m_PidSubsystem = new PIDSubsystem(); //FIXME
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController = 
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -59,19 +66,19 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     /***********ELEVATOR SUBSYSTEM!!!  IF USED. DISABLE PID SUBSYTEM************** */
-
+//FIXME
     //Motion Magic
-    m_driverController.a().whileTrue(new ElevatorCommand(ElevatorConstants.CoralL1, m_elevatorSubsystem))
-      .onFalse(new ElevatorCommand(ElevatorConstants.Rest, m_elevatorSubsystem));
+    m_driverController.a().whileTrue(new ElevatorCommand(ElevatorConstants.CoralL1, elevatorSubsystem))
+      .onFalse(new ElevatorCommand(ElevatorConstants.Rest, elevatorSubsystem));
 
     //forward manual
-    m_driverController.y().whileTrue(new RunCommand(() -> m_elevatorSubsystem.manualDrive(0.5), m_elevatorSubsystem))
-      .onFalse(new InstantCommand(() -> m_elevatorSubsystem.manualDrive(0)));
+    m_driverController.y().whileTrue(new RunCommand(() -> elevatorSubsystem.manualDrive(0.5), elevatorSubsystem))
+      .onFalse(new InstantCommand(() -> elevatorSubsystem.manualDrive(0)));
 
     //reverse manual
-    m_driverController.x().whileTrue(new RunCommand(() -> m_elevatorSubsystem.manualDrive(-0.5), m_elevatorSubsystem))
-      .onFalse(new InstantCommand(() -> m_elevatorSubsystem.manualDrive(0)));
-
+    m_driverController.x().whileTrue(new RunCommand(() -> elevatorSubsystem.manualDrive(-0.5), elevatorSubsystem))
+      .onFalse(new InstantCommand(() -> elevatorSubsystem.manualDrive(0)));
+//FIXME
     /**********PID SUBSYSTEM!!!  IF USED, DISABLE ELEVATOR SUBSYSTEM*************** 
     m_driverController.a().onTrue(new RunCommand(() -> m_PidSubsystem.voltageControl(), m_PidSubsystem))
       .onFalse(new RunCommand(() -> m_PidSubsystem.brake(), m_PidSubsystem));
@@ -85,6 +92,11 @@ public class RobotContainer {
     m_driverController.x().onTrue(new RunCommand(() -> m_PidSubsystem.testMotor(-0.4), m_PidSubsystem))
       .onFalse(new RunCommand(() -> m_PidSubsystem.testMotor(0), m_PidSubsystem));*/
 
+      //CORAL RELEASE BUTTON
+      m_operatorController.b().whileTrue(new RunCommand(() -> coralSubsystem.coralRelease(Constants.SpeedConstants.kCoralRelease), coralSubsystem))
+              .onFalse(Commands.runOnce(() -> coralSubsystem.coralRelease(0), coralSubsystem));
+      m_operatorController.x().whileTrue(new RunCommand(() -> coralSubsystem.coralReverse(Constants.SpeedConstants.kCoralReverse), coralSubsystem))
+              .onFalse(Commands.runOnce(() -> coralSubsystem.coralReverse(0), coralSubsystem));
   }
 
   /**

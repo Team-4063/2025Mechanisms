@@ -14,7 +14,8 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort = 1;
+    public static final int kOperatorControllerPort = 0;
   }
 
   public static class ElevatorConstants {
@@ -49,11 +50,20 @@ public final class Constants {
   }
 
   public static class MotorConstants {
-    public static final String CANbus = "canivore";
+    public static final String rio = "canivore";
     
     //ELEVATOR
-    public static final int kElevatorPort1 = 21;
-    public static final int kElevatorPort2 = 22;
+    public static final int kElevatorPort1 = 31;
+    public static final int kElevatorPort2 = 32;
+
+    //CORAL
+    public static final int m_coralMotor = 33; //temp ID, must assign ID and liscence
   }
 
+  public static class SpeedConstants{
+    //Speed Constants
+
+    public static final double kCoralRelease = 0.5; //temp speeds, need final speed later.
+    public static final double kCoralReverse = 0.1;
+  }
 }
